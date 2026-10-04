@@ -1,6 +1,6 @@
 # Talk Outline: Building MCP Servers in .NET
 
-Rough outline for the TechBash 2026 session. See the [README](README.md) for the abstract.
+Rough outline for the TechBash 2026 session. See the [README](README.md) for the abstract and [DEMO.md](DEMO.md) for the step-by-step demo and the code for each step.
 
 The running example is a time and timezone server. It's small enough to build live, and it covers all three MCP primitives in one domain.
 
@@ -45,13 +45,13 @@ Introduce the three primitives in the same domain:
 - Inject `TimeProvider`. This makes the DI point and the testability point together.
 - Write the `[Description]` text, since that's what the model reads.
 - Return structured output.
-- Write error messages that help the model retry.
 - Add the resource and the prompt.
 
 ## 7. Run it in MCP Inspector
 
 - Show the raw JSON-RPC. This is what the model sees.
 - Show the stdout gotcha with the stdio transport.
+- Write error messages that help the model retry.
 
 ## 8. Add it to Claude Code
 
