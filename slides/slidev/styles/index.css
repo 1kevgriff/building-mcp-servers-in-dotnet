@@ -1,0 +1,265 @@
+@import './fonts.css';
+
+/* Brand tokens carried over from the PowerPoint build (scratchpad/deck/build.js), unchanged. */
+
+:root {
+  --navy:  #16303F;
+  --cream: #F7F6F3;
+  --gold:  #F4C233;
+  --code:  #011627;   /* night-owl ground, same as the carbon panels */
+  --muted: #44535A;   /* 7.4:1 on cream. #6B7B84 was 4.06:1 - under WCAG AA and
+                         far too faint projected, per audience review */
+  --rule:  #DDD9D2;
+}
+
+/* ---- ground ------------------------------------------------------------------- */
+
+.slidev-layout {
+  background: var(--cream);
+  color: var(--navy);
+  font-family: 'Source Sans 3', ui-sans-serif, system-ui, sans-serif;
+  font-weight: 400;
+  padding: 2.2rem 3rem;
+}
+
+.slidev-layout h1 {
+  font-weight: 800;
+  font-size: 2.35rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--navy);
+  margin: 0 0 1.1rem;
+  text-align: left;
+}
+
+.slidev-layout h2 {
+  font-weight: 700;
+  font-size: 1.35rem;
+  color: var(--navy);
+}
+
+.slidev-layout p,
+.slidev-layout li { font-size: 1rem; line-height: 1.5; }
+
+.slidev-layout strong { font-weight: 800; }
+.slidev-layout code   { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+/* ---- code --------------------------------------------------------------------- */
+
+.slidev-layout pre.slidev-code,
+.slidev-layout .slidev-code {
+  background: var(--code) !important;
+  border-radius: 10px;
+  padding: 1.1rem 1.3rem;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.86rem;
+  overflow: hidden;       /* never let code paint outside its own panel */
+  max-width: 100%;
+}
+
+/* Panel code is sized by the generator to fit its column; padding here must match
+   PADDING in fitPanels() or the measurement is wrong. */
+.slidev-layout .panel-row .slidev-code,
+.slidev-layout .panel-row .slidev-code code {
+  font-size: var(--code-size, 13px);
+}
+.slidev-layout .panel-row .slidev-code { padding: 0.8rem 0.85rem; }
+
+/* Shiki line marker -> the gold highlight the outline asks for.
+   Slidev's own classes are `slidev-code-highlighted` / `slidev-code-dishonored`.
+
+   Shiki emits `<span class="line">...</span>` separated by real newlines, and inside a <pre>
+   those newlines ARE the line breaks. So .line stays inline: making every line a block gives
+   you the block break AND the newline, which silently double-spaces every code block and runs
+   it off the bottom of the slide. Only the marked lines go block, so the gold band can span
+   the full width - that costs a little extra leading on the one slide that has a marker. */
+.slidev-layout .slidev-code code { line-height: 1.5; }
+.slidev-layout .slidev-code-highlighted {
+  display: block;
+  background: rgba(244, 194, 51, 0.16);
+  box-shadow: inset 3px 0 0 var(--gold);
+}
+
+/* ---- tables ------------------------------------------------------------------- */
+
+.slidev-layout table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  margin: 0.3rem 0;
+}
+.slidev-layout thead th {
+  text-align: left;
+  font-weight: 800;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 2px solid var(--navy);
+  padding: 0.45rem 0.7rem;
+}
+.slidev-layout tbody td {
+  padding: 0.42rem 0.7rem;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+.slidev-layout tbody tr:nth-child(even) { background: rgba(22, 48, 63, 0.035); }
+.slidev-layout tbody td code {
+  background: rgba(22, 48, 63, 0.07);
+  padding: 0.08em 0.36em;
+  border-radius: 4px;
+  font-size: 0.92em;
+}
+.slidev-layout tbody td strong { color: var(--navy); }
+
+/* ---- lists -------------------------------------------------------------------- */
+
+.slidev-layout ul, .slidev-layout ol { margin: 0; padding-left: 1.1rem; }
+.slidev-layout li { margin: 0.3rem 0; }
+
+/* ---- blockquote (statement slides carry their text as a quote) ----------------- */
+
+.slidev-layout blockquote {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  font-size: inherit;
+  color: inherit;
+  background: none;
+}
+
+/* ---- cards -------------------------------------------------------------------- */
+
+.slidev-layout .cards { align-items: stretch; }
+.slidev-layout .card  { min-height: 8.2rem; }
+
+/* A 2-up quadrant reads better with more room per card than a 5-up row. */
+.slidev-layout .cards[style*="--cols:2"] .card { min-height: 6.6rem; }
+
+/* ---- emphasised table row ------------------------------------------------------ */
+/* OUTLINE.md singles out one row on a couple of tables: slide 18's winning value
+   ("bold navy with a large gold value") and slide 42's first row ("Row one is
+   highlighted"). The generator emits `class: mark-row-N` in the slide's frontmatter;
+   nth-child does the rest, so no runtime hook is needed. */
+
+.slidev-layout.mark-row-1 tbody tr:nth-child(1),
+.slidev-layout.mark-row-2 tbody tr:nth-child(2),
+.slidev-layout.mark-row-3 tbody tr:nth-child(3),
+.slidev-layout.mark-row-4 tbody tr:nth-child(4),
+.slidev-layout.mark-row-5 tbody tr:nth-child(5),
+.slidev-layout.mark-row-6 tbody tr:nth-child(6),
+.slidev-layout.mark-row-7 tbody tr:nth-child(7),
+.slidev-layout.mark-row-8 tbody tr:nth-child(8) {
+  background: var(--navy);
+}
+.slidev-layout.mark-row-1 tbody tr:nth-child(1) td,
+.slidev-layout.mark-row-2 tbody tr:nth-child(2) td,
+.slidev-layout.mark-row-3 tbody tr:nth-child(3) td,
+.slidev-layout.mark-row-4 tbody tr:nth-child(4) td,
+.slidev-layout.mark-row-5 tbody tr:nth-child(5) td,
+.slidev-layout.mark-row-6 tbody tr:nth-child(6) td,
+.slidev-layout.mark-row-7 tbody tr:nth-child(7) td,
+.slidev-layout.mark-row-8 tbody tr:nth-child(8) td {
+  border-bottom-color: var(--navy);
+  color: var(--cream);
+}
+.slidev-layout.mark-row-1 tbody tr:nth-child(1) td strong,
+.slidev-layout.mark-row-2 tbody tr:nth-child(2) td strong,
+.slidev-layout.mark-row-3 tbody tr:nth-child(3) td strong,
+.slidev-layout.mark-row-4 tbody tr:nth-child(4) td strong,
+.slidev-layout.mark-row-5 tbody tr:nth-child(5) td strong,
+.slidev-layout.mark-row-6 tbody tr:nth-child(6) td strong,
+.slidev-layout.mark-row-7 tbody tr:nth-child(7) td strong,
+.slidev-layout.mark-row-8 tbody tr:nth-child(8) td strong {
+  color: var(--cream);
+}
+.slidev-layout.mark-row-1 tbody tr:nth-child(1) td:last-child,
+.slidev-layout.mark-row-2 tbody tr:nth-child(2) td:last-child,
+.slidev-layout.mark-row-3 tbody tr:nth-child(3) td:last-child,
+.slidev-layout.mark-row-4 tbody tr:nth-child(4) td:last-child,
+.slidev-layout.mark-row-5 tbody tr:nth-child(5) td:last-child,
+.slidev-layout.mark-row-6 tbody tr:nth-child(6) td:last-child,
+.slidev-layout.mark-row-7 tbody tr:nth-child(7) td:last-child,
+.slidev-layout.mark-row-8 tbody tr:nth-child(8) td:last-child {
+  color: var(--gold);
+  font-weight: 800;
+}
+
+/* Only slide 18 wants "a large gold value"; slide 42's last cell is a whole sentence and
+   blowing it up would swamp the row. So the size bump is opt-in via markValue. */
+.slidev-layout.mark-value.mark-row-1 tbody tr:nth-child(1) td:last-child,
+.slidev-layout.mark-value.mark-row-2 tbody tr:nth-child(2) td:last-child,
+.slidev-layout.mark-value.mark-row-3 tbody tr:nth-child(3) td:last-child,
+.slidev-layout.mark-value.mark-row-4 tbody tr:nth-child(4) td:last-child,
+.slidev-layout.mark-value.mark-row-5 tbody tr:nth-child(5) td:last-child,
+.slidev-layout.mark-value.mark-row-6 tbody tr:nth-child(6) td:last-child,
+.slidev-layout.mark-value.mark-row-7 tbody tr:nth-child(7) td:last-child,
+.slidev-layout.mark-value.mark-row-8 tbody tr:nth-child(8) td:last-child {
+  font-size: 1.25em;
+}
+.slidev-layout.mark-row-1 tbody tr:nth-child(1) td code,
+.slidev-layout.mark-row-2 tbody tr:nth-child(2) td code,
+.slidev-layout.mark-row-3 tbody tr:nth-child(3) td code,
+.slidev-layout.mark-row-4 tbody tr:nth-child(4) td code,
+.slidev-layout.mark-row-5 tbody tr:nth-child(5) td code,
+.slidev-layout.mark-row-6 tbody tr:nth-child(6) td code,
+.slidev-layout.mark-row-7 tbody tr:nth-child(7) td code,
+.slidev-layout.mark-row-8 tbody tr:nth-child(8) td code {
+  background: rgba(247, 246, 243, 0.14);
+  color: var(--cream);
+}
+
+.slidev-layout.mark-row-1 tbody tr:nth-child(1) td:last-child strong,
+.slidev-layout.mark-row-2 tbody tr:nth-child(2) td:last-child strong,
+.slidev-layout.mark-row-3 tbody tr:nth-child(3) td:last-child strong,
+.slidev-layout.mark-row-4 tbody tr:nth-child(4) td:last-child strong,
+.slidev-layout.mark-row-5 tbody tr:nth-child(5) td:last-child strong,
+.slidev-layout.mark-row-6 tbody tr:nth-child(6) td:last-child strong,
+.slidev-layout.mark-row-7 tbody tr:nth-child(7) td:last-child strong,
+.slidev-layout.mark-row-8 tbody tr:nth-child(8) td:last-child strong {
+  color: var(--gold);
+}
+
+/* ---- dense tables -------------------------------------------------------------- */
+/* Eight rows plus a reading-direction label plus a footnote does not fit at the normal
+   row height. Tightening the rows keeps the whole reference table on screen, which
+   matters more here than uniform spacing - these are the slides people photograph. */
+
+.slidev-layout.table-dense tbody td { padding: 0.28rem 0.7rem; }
+.slidev-layout.table-dense thead th { padding: 0.3rem 0.7rem; }
+.slidev-layout.table-dense table { font-size: 0.84rem; }
+
+/* ---- inline code on dark grounds ----------------------------------------------- */
+/*
+   Slidev styles inline code with a LIGHT chip background. On a navy divider the text
+   inherits the cream heading colour and lands cream-on-light: the word vanishes and the
+   slide shows a blank white rectangle. `appsettings.json` and `launchSettings` both
+   disappeared this way in act dividers.
+
+   Set BOTH halves wherever the ground is dark, never just the background.
+*/
+.slidev-layout.layout-section :not(pre) > code,
+.slidev-layout .card.accent :not(pre) > code,
+.slidev-layout .panel.dark :not(pre) > code {
+  background: rgba(247, 246, 243, 0.16);
+  color: var(--cream);
+}
+
+/* ---- repo QR -------------------------------------------------------------------- */
+/* Generated from the actual git remote by build/, committed as SVG so the deck has no
+   runtime dependency on a QR library. */
+
+.slidev-layout .repo-qr {
+  display: block;
+  width: 9rem;
+  height: 9rem;
+  margin: 0.9rem auto 0;
+}
+
+/* The closing slide's QR sits in the cover layout's left column, underneath the contact
+   lines. Centring it there would break that column's left edge, so it keeps its original
+   alignment - only the standalone repo slide centres. */
+.slidev-layout.layout-cover .repo-qr {
+  margin-left: 0;
+  margin-right: 0;
+}
