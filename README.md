@@ -1,9 +1,10 @@
 # building-mcp-servers-in-dotnet
 Talk: Building MCP Servers in .NET
 
-**Speaker:** Kevin Griffin
-**Event:** [TechBash 2026](https://techbash.com/sessions): Thursday, October 15, 2026, 10:20–11:20 AM, Salons E/F
-**Format:** 60 Minute Session · AI · .NET
+- **Speaker:** Kevin Griffin
+- **Event:** [TechBash 2026](https://techbash.com/sessions): Thursday, October 15, 2026, 10:20–11:20 AM, Salons E/F
+- **Format:** 60 Minute Session · AI · .NET
+- **Outline:** [OUTLINE.md](OUTLINE.md)
 
 ## Abstract
 
