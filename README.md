@@ -5,6 +5,7 @@ Talk: Building MCP Servers in .NET
 - **Event:** [TechBash 2026](https://techbash.com/sessions): Thursday, October 15, 2026, 10:20–11:20 AM, Salons E/F
 - **Format:** 60 Minute Session · AI · .NET
 - **Outline:** [OUTLINE.md](OUTLINE.md)
+- **Demo:** [DEMO.md](DEMO.md), with code for each step in [`src/`](src)
 
 ## Abstract
 
