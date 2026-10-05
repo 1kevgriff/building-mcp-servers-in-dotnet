@@ -10,7 +10,9 @@ npm run verify     # build + prove no slide clips its content
 
 ## slides.md is hand-written
 
-The configuration deck generates `slides.md` from a slide-by-slide `OUTLINE.md`. This deck doesn't, yet: the outline here is still ten rough sections, so `slides.md` is the source and you edit it directly. Each slide's speaker notes say which outline section and which `src/demoNN` folder it belongs to.
+The configuration deck generates `slides.md` from a slide-by-slide `OUTLINE.md`. This deck doesn't, yet: the outline here is still ten rough sections, so `slides.md` is the source and you edit it directly. Speaker notes point to the `src/demoNN` folder each demo section uses.
+
+Code and output on the slides come from the demo projects and from real runs against them: the tool definition, the request and result, the error messages, and the Inspector timeout.
 
 ## Editing
 
@@ -62,4 +64,4 @@ Remote control needs a password: one is generated and printed on start, or set `
 ## Known gaps
 
 - **Feedback QR.** The configuration deck ends with a session feedback QR code. Add one for TechBash once you have the link: drop the SVG in `public/` and add a slide before "Let's keep talking."
-- **Content.** Most slides are section dividers carrying the outline's bullets as speaker notes. The tool loop, the three primitives, the `dotnet new` code, and the recipe have on-screen content.
+- **Codex setup.** The "Same server, every client" slide shows the Claude Code and VS Code configuration. Codex is configured before the talk and isn't on a slide.
