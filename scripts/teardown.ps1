@@ -3,9 +3,10 @@
 
 $repo = Split-Path $PSScriptRoot -Parent
 
-Write-Host '== Stop the HTTP server on port 6233'
-Get-NetTCPConnection -LocalPort 6233 -State Listen -ErrorAction SilentlyContinue |
-    ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue }
+Write-Host '== Stop running demo servers'
+Get-Process TimeServer -ErrorAction SilentlyContinue |
+    Where-Object { $_.Path -like "$repo\src\*" } |
+    Stop-Process -Force
 
 Write-Host '== Claude Code: remove time and time-http'
 foreach ($name in 'time', 'time-http') {

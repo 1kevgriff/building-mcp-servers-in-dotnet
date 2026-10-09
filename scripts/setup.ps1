@@ -18,9 +18,10 @@ dotnet new install Microsoft.McpServer.ProjectTemplates | Out-Null
 Write-Host '== MCP Inspector (cache it so the stage needs no network)'
 npm cache add '@modelcontextprotocol/inspector@2.9.0' | Out-Null
 
-Write-Host '== Stop the HTTP server on port 6233 (a running demo05 locks its build output)'
-Get-NetTCPConnection -LocalPort 6233 -State Listen -ErrorAction SilentlyContinue |
-    ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue }
+Write-Host '== Stop running demo servers (they lock their build output)'
+Get-Process TimeServer -ErrorAction SilentlyContinue |
+    Where-Object { $_.Path -like "$repo\src\*" } |
+    Stop-Process -Force
 
 Write-Host '== Build demo01-demo05'
 foreach ($n in 1..5) {
