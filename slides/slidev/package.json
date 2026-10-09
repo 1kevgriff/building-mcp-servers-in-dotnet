@@ -1,0 +1,24 @@
+{
+  "name": "building-mcp-servers-in-dotnet-slides",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "slidev build",
+    "dev": "slidev --open",
+    "export": "npm run build && slidev export --wait 6000 --wait-until networkidle --timeout 600000",
+    "export:png": "npm run build && slidev export --format png --wait 6000 --wait-until networkidle --timeout 600000",
+    "export:pptx": "npm run build && slidev export --format pptx-editable --wait 6000 --wait-until networkidle --timeout 600000",
+    "check": "node build/check-overflow.mjs",
+    "verify": "npm run build && npm run check",
+    "dev:tailscale": "node --env-file-if-exists=.env.local build/serve-tailscale.mjs"
+  },
+  "dependencies": {
+    "@slidev/cli": "^53.0.0",
+    "@slidev/theme-default": "latest",
+    "vue": "^3.5.33"
+  },
+  "devDependencies": {
+    "@slidev/parser": "^53.0.0",
+    "playwright-chromium": "^1.63.0"
+  }
+}

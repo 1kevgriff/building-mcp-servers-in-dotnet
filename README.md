@@ -6,6 +6,7 @@ Talk: Building MCP Servers in .NET
 - **Format:** 60 Minute Session · AI · .NET
 - **Outline:** [OUTLINE.md](OUTLINE.md)
 - **Demo:** [DEMO.md](DEMO.md), with code for each step in [`src/`](src)
+- **Slides:** [`slides/slidev`](slides/slidev) (Slidev; `npm install && npm run dev`)
 
 ## Abstract
 

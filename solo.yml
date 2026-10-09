@@ -1,0 +1,44 @@
+# Solo commands for this talk. Repo-controlled, so the setup travels with the checkout.
+
+name: building-mcp-servers-in-dotnet
+icon_initials: BM
+
+processes:
+  Slides:
+    # The deck. Presenter mode with speaker notes is at /presenter, or press `p`.
+    # No --port: with one pinned, Slidev exits if it is taken. Left alone it picks a free
+    # port and Solo shows the URL in the command's ports.
+    command: npx slidev
+    working_dir: slides/slidev
+    auto_start: false
+    auto_restart: false
+    env: {}
+
+  Slides (tailnet):
+    # Same deck, reachable from your phone or anything else on the tailnet.
+    # Binds ONLY the Tailscale address - not 0.0.0.0 - so it is not also published to
+    # whatever wifi you are on. Port 3031 so it can run beside the local "Slides".
+    # `--remote` enables presenter/remote control, so it takes a password: one is
+    # generated and printed on start, or pin it with SLIDEV_REMOTE_PASSWORD.
+    command: npm run dev:tailscale
+    working_dir: slides/slidev
+    auto_start: false
+    auto_restart: false
+    env: {}
+
+  Verify deck:
+    # Run before presenting. `slidev build` alone proves nothing: it happily compiles a slide
+    # whose code runs off the bottom, because panels clip in silence. This renders every
+    # slide and fails on any overflow.
+    command: npm run verify
+    working_dir: slides/slidev
+    auto_start: false
+    auto_restart: false
+    env: {}
+
+  Export PDF:
+    command: npm run export
+    working_dir: slides/slidev
+    auto_start: false
+    auto_restart: false
+    env: {}
