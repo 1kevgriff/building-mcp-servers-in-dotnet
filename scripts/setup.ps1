@@ -1,10 +1,12 @@
 # Gets this machine ready to give the talk. Safe to run more than once.
 # Undo everything with scripts/teardown.ps1.
 #
-# Leaves Claude Code with no time server registered, because both
-# registrations happen live on stage: `time` (stdio, demo04) in step 6 and
-# `time-http` (demo05) in step 7. Codex and Copilot get the HTTP server
-# ahead of time, as DEMO.md says.
+# Leaves Claude Code with an empty .mcp.json, because both registrations
+# happen live on stage with -s project: `time` (stdio, demo04) in step 6 and
+# `time-http` (demo05) in step 7. On stage, Claude Code is launched with
+# --strict-mcp-config --mcp-config .mcp.json, so no other MCP server can
+# answer the Tokyo question. Codex and Copilot get the HTTP server ahead of
+# time, as DEMO.md says.
 
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path $PSScriptRoot -Parent
@@ -32,6 +34,7 @@ foreach ($name in 'time', 'time-http') {
         claude mcp remove $name -s $scope *> $null
     }
 }
+'{ "mcpServers": {} }' | Set-Content (Join-Path $repo '.mcp.json') -Encoding utf8NoBOM
 
 Write-Host "== Codex: time -> $url"
 codex mcp remove time *> $null

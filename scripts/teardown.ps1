@@ -13,6 +13,7 @@ foreach ($name in 'time', 'time-http') {
         claude mcp remove $name -s $scope *> $null
     }
 }
+Remove-Item (Join-Path $repo '.mcp.json') -ErrorAction SilentlyContinue
 
 Write-Host '== Codex: remove time'
 codex mcp remove time *> $null

@@ -31,11 +31,13 @@ After the talk, `scripts/teardown.ps1` stops the server and removes every regist
 
 ## Step 1: Cold open (§1)
 
-Start Claude Code with its shell and web tools turned off, and tell the audience you did. Otherwise it just runs `date` and gets the answer right.
+Start Claude Code from the repo root with its shell, web, and subagent tools turned off and only the repo's own MCP servers loaded. Tell the audience you did. Otherwise it gets the answer right: it runs `date`, or it finds a time tool in some other MCP server. In rehearsal, a subagent found one in the Docker MCP gateway.
 
 ```
-claude --disallowedTools "Bash PowerShell WebFetch WebSearch"
+claude --strict-mcp-config --mcp-config .mcp.json --disallowedTools "Bash PowerShell WebFetch WebSearch Agent"
 ```
+
+`setup.ps1` leaves `.mcp.json` with no servers in it, so this session has no MCP tools until step 6.
 
 Ask: *"What time is it in Tokyo right now?"* It can only guess or hedge.
 
@@ -100,10 +102,11 @@ Run it from inside the folder. The Inspector swallows a `--project` flag passed 
 ## Step 6: Claude Code (§8), using `demo04`
 
 ```
-claude mcp add time -- dotnet run --project /path/to/src/demo04
+claude mcp add -s project time -- dotnet run --project /path/to/src/demo04
 ```
 
-- Restart Claude Code with the same `--disallowedTools` flags, run `/mcp` to confirm the server is connected, and ask the Tokyo question again.
+- `-s project` writes the server to `.mcp.json`, which is the only MCP config the step 1 command loads.
+- Restart Claude Code with the step 1 command, run `/mcp` to confirm the server is connected, and ask the Tokyo question again.
 - Run the prompt as a slash command: `/mcp__time__find_meeting_time`. Pass the zones without spaces, for example `America/New_York,Europe/London,Asia/Tokyo`.
 - Optional, if it reproduces in rehearsal: ask about a city whose IANA ID isn't obvious, and let the audience watch the model recover from the error message.
 
@@ -119,7 +122,7 @@ What changes:
 Then:
 
 - Run it locally with `dotnet run --project src/demo05`. It listens on `http://localhost:6233/`, and `TimeServer.http` sends a raw `tools/call`.
-- In Claude Code: `claude mcp add --transport http time-http http://localhost:6233/`
+- In Claude Code: `claude mcp add -s project --transport http time-http http://localhost:6233/`, then restart with the step 1 command.
 - Ask the same question from Codex and Copilot, which you set up before the talk.
 - Stateless mode keeps no per-session state, so any instance can answer any request when you scale it out.
 - There's no authentication. That's fine for a read-only time server; J. Tower's "The S in MCP is for Security" (Friday, 10:15 AM) covers securing MCP in .NET.

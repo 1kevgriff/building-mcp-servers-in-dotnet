@@ -37,9 +37,10 @@ What time is it in Tokyo right now?
 <!--
 [COLD OPEN]
 
-Switch to Claude Code, started with its shell and web tools turned off:
+Switch to Claude Code, started from the repo root with its shell, web, and subagent tools
+off and no MCP servers loaded (the Docker MCP gateway has a time tool):
 
-  claude --disallowedTools "Bash PowerShell WebFetch WebSearch"
+  claude --strict-mcp-config --mcp-config .mcp.json --disallowedTools "Bash PowerShell WebFetch WebSearch Agent"
 
 Tell the room you turned them off. Ask the question and let it fail or hedge.
 We come back to this in section 8.
