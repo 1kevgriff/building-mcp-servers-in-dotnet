@@ -60,7 +60,7 @@ Introduce the three primitives in the same domain:
 ## 9. Go remote
 
 - Switch to the HTTP transport.
-- Show it deployed to Azure.
+- Run it on localhost.
 - Connect Codex and Copilot. Same server, every client.
 
 ## 10. Wrap up

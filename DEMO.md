@@ -8,7 +8,7 @@ The talk has one demo, built up over several sections. Each folder under `src/` 
 | [`src/demo02`](src/demo02) | Time tools, with two planted bugs | §6 Build it out |
 | [`src/demo03`](src/demo03) | Adds the resource and the prompt (bugs still planted) | §6 Build it out |
 | [`src/demo04`](src/demo04) | Bugs fixed: logging and error messages | §7 MCP Inspector, §8 Claude Code |
-| [`src/demo05`](src/demo05) | HTTP transport, ready for Azure | §9 Go remote |
+| [`src/demo05`](src/demo05) | HTTP transport on localhost | §9 Go remote |
 
 Built against the .NET 10 SDK, `Microsoft.McpServer.ProjectTemplates` 1.2.1, `ModelContextProtocol` 2.1.0, and MCP Inspector 2.9.0.
 
@@ -18,7 +18,7 @@ Built against the .NET 10 SDK, `Microsoft.McpServer.ProjectTemplates` 1.2.1, `Mo
 - Run `npx @modelcontextprotocol/inspector` once so it's cached.
 - In the Inspector's settings, set **Request Timeout** to about 10 seconds. The stdout bug hangs the call, and you don't want to wait a full minute for it.
 - Build every demo folder so nothing needs the network: `dotnet build src/demo01` through `src/demo05`.
-- Deploy `demo05` to Azure, and add its URL to Codex and Copilot ahead of time.
+- Add `http://localhost:6233/` to Codex and Copilot ahead of time.
 - Rehearse the cold open. Its result depends on the model.
 
 ## Step 1: Cold open (§1)
@@ -111,9 +111,9 @@ What changes:
 Then:
 
 - Run it locally with `dotnet run --project src/demo05`. It listens on `http://localhost:6233/`, and `TimeServer.http` sends a raw `tools/call`.
-- Switch to the Azure URL. In Claude Code: `claude mcp add --transport http time-azure https://<your-app>/`
+- In Claude Code: `claude mcp add --transport http time-http http://localhost:6233/`
 - Ask the same question from Codex and Copilot, which you set up before the talk.
-- Stateless mode keeps no per-session state, so any instance can answer any request when Azure scales out.
+- Stateless mode keeps no per-session state, so any instance can answer any request when you scale it out.
 - There's no authentication. That's fine for a read-only time server; J. Tower's "The S in MCP is for Security" (Friday, 10:15 AM) covers securing MCP in .NET.
 
 ## Wrap-up (§10)

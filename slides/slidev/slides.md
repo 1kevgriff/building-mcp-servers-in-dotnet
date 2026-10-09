@@ -794,7 +794,7 @@ kicker: ""
 # Go remote
 
 <!--
-Switch to the HTTP transport, show it deployed to Azure, and connect Codex and Copilot.
+Switch to the HTTP transport, run it on localhost, and connect Codex and Copilot.
 Same server, every client.
 
 Demo: src/demo05
@@ -867,7 +867,7 @@ layout: "panels"
 <Panel caption="claude code">
 
 ```text
-$ claude mcp add --transport http time https://<your-app>/
+$ claude mcp add --transport http time http://localhost:6233/
 ```
 
 </Panel>
@@ -877,7 +877,7 @@ $ claude mcp add --transport http time https://<your-app>/
 ```json
 {
   "servers": {
-    "time": { "type": "http", "url": "https://<your-app>/" }
+    "time": { "type": "http", "url": "http://localhost:6233/" }
   }
 }
 ```
@@ -898,7 +898,7 @@ Stateless means any instance can answer any request.
 
 <Caption>
 
-No session to pin to one server, so Azure can scale it out without sticky sessions.
+No session to pin to one server, so you can scale it out without sticky sessions.
 
 </Caption>
 
