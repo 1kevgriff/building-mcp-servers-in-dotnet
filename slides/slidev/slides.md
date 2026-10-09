@@ -265,19 +265,19 @@ layout: "default"
 
 <Cards :cols="3">
 
-<Card n="01" title="There's already a good CLI">
+<Card n="01" title="There's already a good CLI" v-click>
 
 …and the agent has a shell. Claude Code could have answered the cold open with `date`. I turned that off.
 
 </Card>
 
-<Card n="02" title="One client, one script">
+<Card n="02" title="One client, one script" v-click>
 
 A tool built into that one harness is less to build and less to run.
 
 </Card>
 
-<Card n="03" title="Every tool costs context" accent>
+<Card n="03" title="Every tool costs context" accent v-click>
 
 Tool definitions take up the model's context. Fifty tools spend it before any work starts.
 

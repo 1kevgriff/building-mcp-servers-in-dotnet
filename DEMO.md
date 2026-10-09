@@ -108,7 +108,6 @@ claude mcp add -s project time -- dotnet run --project /path/to/src/demo04
 - `-s project` writes the server to `.mcp.json`, which is the only MCP config the step 1 command loads.
 - Restart Claude Code with the step 1 command, run `/mcp` to confirm the server is connected, and ask the Tokyo question again.
 - Run the prompt as a slash command: `/mcp__time__find_meeting_time`. Pass the zones without spaces, for example `America/New_York,Europe/London,Asia/Tokyo`.
-- Optional, if it reproduces in rehearsal: ask about a city whose IANA ID isn't obvious, and let the audience watch the model recover from the error message.
 
 ## Step 7: Go remote (§9) → `demo05`
 
