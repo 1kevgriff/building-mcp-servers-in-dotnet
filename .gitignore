@@ -55,3 +55,6 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# Written by scripts/setup.ps1, removed by scripts/teardown.ps1
+.vscode/mcp.json

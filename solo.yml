@@ -4,6 +4,13 @@ name: building-mcp-servers-in-dotnet
 icon_initials: BM
 
 processes:
+  MCP server (HTTP):
+    # demo05 on http://localhost:6233/ for step 7. Codex and Copilot point here (scripts/setup.ps1).
+    command: dotnet run --project src/demo05
+    auto_start: false
+    auto_restart: false
+    env: {}
+
   Slides:
     # The deck. Presenter mode with speaker notes is at /presenter, or press `p`.
     # No --port: with one pinned, Slidev exits if it is taken. Left alone it picks a free

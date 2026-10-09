@@ -14,12 +14,20 @@ Built against the .NET 10 SDK, `Microsoft.McpServer.ProjectTemplates` 1.2.1, `Mo
 
 ## Before you go on stage
 
-- Install the template: `dotnet new install Microsoft.McpServer.ProjectTemplates`
-- Run `npx @modelcontextprotocol/inspector` once so it's cached.
+Run `scripts/setup.ps1`. It:
+
+- Installs the MCP server template and caches MCP Inspector, so nothing needs the network.
+- Builds `src/demo01` through `src/demo05`.
+- Clears any `time` or `time-http` server from Claude Code, since steps 6 and 7 add them live.
+- Points Codex and Copilot (`.vscode/mcp.json`) at `http://localhost:6233/`.
+
+Then, by hand:
+
 - In the Inspector's settings, set **Request Timeout** to about 10 seconds. The stdout bug hangs the call, and you don't want to wait a full minute for it.
-- Build every demo folder so nothing needs the network: `dotnet build src/demo01` through `src/demo05`.
-- Add `http://localhost:6233/` to Codex and Copilot ahead of time.
+- Before step 7, start the HTTP server: the Solo "MCP server (HTTP)" command, or `dotnet run --project src/demo05`. In VS Code, start the `time` server from `.vscode/mcp.json`.
 - Rehearse the cold open. Its result depends on the model.
+
+After the talk, `scripts/teardown.ps1` stops the server and removes every registration.
 
 ## Step 1: Cold open (§1)
 
