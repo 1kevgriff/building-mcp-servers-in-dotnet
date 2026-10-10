@@ -121,7 +121,7 @@ What changes:
 Then:
 
 - Show both transports with no client in between. It's the same JSON-RPC in a different envelope:
-  - stdio: `scripts/raw-stdio.ps1` pipes `initialize` and a `tools/call` into `demo04` and prints stdout, one JSON message per line. Add `-Method tools -Pretty` to show the tool list the model reads, `-Demo demo03` to show the stdout bug raw, or `-TimeZone Tokyo` to show the error message.
+  - stdio: `scripts/raw-stdio.ps1` pipes `initialize` and a `tools/call` into `demo04` and prints stdout, one JSON message per line. Add `-Method tools` to show the tool list the model reads, `-Demo demo03` to show the stdout bug raw, or `-TimeZone Tokyo` to show the error message.
   - HTTP: run `dotnet run --project src/demo05`. It listens on `http://localhost:6233/`. `TimeServer.http` has one request per method: `tools/list`, `tools/call` (good and bad arguments), `convert_time`, `resources/list` and `resources/read`, and `prompts/list` and `prompts/get`. It runs in VS Code (REST Client), Visual Studio, or Rider. Each request stands alone because stateless mode needs no handshake, and each reply comes back as one SSE frame (`event: message`, then `data:`). The same request from curl or Postman:
 
     ```
@@ -129,6 +129,7 @@ Then:
     ```
 
     A browser address bar won't work, because MCP needs a JSON POST.
+  - Or run `scripts/raw-http.ps1`. It prints each curl command and the formatted result, and it starts `demo05` if nothing is listening. It takes `-Method tools|call|resources|read|prompts|prompt|all` and `-TimeZone Tokyo`, plus `-Raw` to show the SSE frame exactly as it arrives.
 - In Claude Code: `claude mcp add -s project --transport http time-http http://localhost:6233/`, then restart with the step 1 command.
 - Ask the same question from Codex and Copilot, which you set up before the talk.
 - Stateless mode keeps no per-session state, so any instance can answer any request when you scale it out.
