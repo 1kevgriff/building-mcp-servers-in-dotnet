@@ -59,6 +59,7 @@ Introduce the three primitives in the same domain:
 
 ## 9. Go remote
 
+- Choose a transport: stdio for just you on your machine, Streamable HTTP for anyone else.
 - Switch to the HTTP transport.
 - Run it on localhost.
 - Connect Codex and Copilot. Same server, every client.

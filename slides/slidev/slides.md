@@ -802,6 +802,36 @@ Demo: src/demo05
 -->
 
 ---
+layout: "default"
+---
+
+# stdio or HTTP?
+
+| | **stdio** | **Streamable HTTP** |
+| --- | --- | --- |
+| **Who starts it** | the client, as a child process | you do; clients connect by URL |
+| **Who can use it** | one person, on their own machine | anyone who can reach the URL |
+| **Whose credentials** | the user's: it runs as them | the caller's token (OAuth, see the appendix) |
+| **You ship it as** | a NuGet tool (`dnx`) or an executable | a web app or a container |
+| **Watch out for** | stdout is the protocol | auth, and state across instances |
+
+<Caption>
+
+Just you, on your machine: stdio. Anyone else: HTTP.
+
+</Caption>
+
+<!--
+The abstract promised "choosing transports". This is the choice.
+
+"HTTP" here means Streamable HTTP: one endpoint, JSON-RPC over POST, with optional streaming
+in the response. It replaced the older HTTP+SSE transport, which is deprecated. If someone
+asks about SSE, that's the answer.
+
+Same server code either way. The next slide proves it.
+-->
+
+---
 layout: "panels"
 ---
 
