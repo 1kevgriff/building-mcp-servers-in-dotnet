@@ -911,7 +911,7 @@ This server has no authentication. It's a read-only clock. Yours isn't.
 
 <Caption>
 
-Securing MCP in .NET: J. Tower, “The S in MCP is for Security”, Friday at 10:15 AM.
+Securing MCP in .NET: J. Tower, “The S in MCP is for Security”, Friday at 10:15 AM in Aloeswood.
 
 </Caption>
 
@@ -931,6 +931,49 @@ panelTitle: "The repeatable recipe"
 
 <!--
 The folder sequence in src/ is the recipe. Share the repo link, then take questions.
+-->
+
+---
+layout: "default"
+---
+
+# Keep going at TechBash
+
+<Cards :cols="2">
+
+<Card n="THU 2:35 PM" title="Are AI Agents the Ultimate Confused Deputy?">
+
+Mohamed AboElKheir · Aloeswood
+
+</Card>
+
+<Card n="FRI 10:15 AM" title="The S in MCP is for Security">
+
+J. Tower · Aloeswood
+
+</Card>
+
+<Card n="FRI 1:30 PM" title="Pragmatic AI in .NET: 10 AI Features Users Want in Your .NET Apps">
+
+J. Tower · Salons E/F
+
+</Card>
+
+<Card n="FRI 2:40 PM" title="Claude Herder: Adding determinism to your coding agents" accent>
+
+Jonathan Markman · Sagewood
+
+</Card>
+
+</Cards>
+
+<!--
+Times and rooms are from the TechBash Sessionize schedule as of October 10, 2026. Check them the morning of the talk.
+
+- Confused Deputy: what happens when an agent's tools act with more authority than the person asking.
+- The S in MCP: securing the servers we built today.
+- Pragmatic AI in .NET: what to build into your apps next.
+- Claude Herder: making the agent side as predictable as the server side.
 -->
 
 ---
