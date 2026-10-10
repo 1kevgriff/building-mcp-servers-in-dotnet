@@ -954,3 +954,178 @@ image: "/kevin-griffin.png"
 - Bluesky — @consultwithgriff.com
 
 <img src="/repo-qr.svg" class="repo-qr" alt="QR code linking to the repository" />
+
+---
+layout: "section"
+kicker: "Appendix"
+---
+
+# OAuth for MCP servers
+
+<!--
+[APPENDIX] Not part of the 60 minutes. Jump here if Q&A goes to auth.
+
+For the full security story, point back to J. Tower's session (Friday, 10:15 AM).
+-->
+
+---
+layout: "default"
+---
+
+# The auth flow
+
+<Cards :cols="4">
+
+<Card n="01" title="No token: 401, plus a link to the server's metadata" v-click></Card>
+<Card n="02" title="The client reads which authorization server to use" v-click></Card>
+<Card n="03" title="OAuth with that server: auth code + PKCE" v-click></Card>
+<Card n="04" title="Retry with a bearer token. The server checks it." accent v-click></Card>
+
+</Cards>
+
+<!--
+The MCP server is an OAuth resource server. It never logs anyone in.
+
+1. The 401's WWW-Authenticate header carries resource_metadata (RFC 9728).
+2. That document names the authorization server(s) and the scopes.
+3. The client registers itself and runs the authorization code flow with PKCE. It sends the
+   resource parameter (RFC 8707), so the token is minted for this server only.
+4. The server validates the token, including its audience.
+
+Claude Code, Codex, and VS Code all run this flow for remote servers: you get a browser login.
+-->
+
+---
+layout: "code"
+codeSize: "14"
+---
+
+# Validate tokens. Publish the metadata.
+
+```csharp
+builder.Services
+    .AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = McpAuthenticationDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.Authority = authServer;
+        options.Audience = serverUrl;
+    })
+    .AddMcp(options =>
+    {
+        options.ResourceMetadata = new()
+        {
+            Resource = serverUrl,
+            AuthorizationServers = { authServer },
+            ScopesSupported = ["time.read"],
+        };
+    });
+```
+
+<!--
+Compiled and run against ModelContextProtocol.AspNetCore 2.1.0 and
+Microsoft.AspNetCore.Authentication.JwtBearer 10.0.
+
+JWT bearer does the validating, same as any ASP.NET Core API. AddMcp adds two things: the
+challenge (a 401 that points at the metadata) and the /.well-known/oauth-protected-resource
+endpoint that serves ResourceMetadata.
+
+Audience = serverUrl is the check that stops a token minted for some other API from working here.
+-->
+
+---
+layout: "code"
+codeSize: "15"
+---
+
+# Then require it
+
+```csharp
+builder.Services.AddAuthorization();
+
+builder.Services
+    .AddMcpServer()
+    .WithHttpTransport(options => options.Stateless = true)
+    .AddAuthorizationFilters()
+    .WithTools<TimeTools>();
+
+var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapMcp().RequireAuthorization();
+```
+
+<!--
+RequireAuthorization() on MapMcp is the same call you'd put on any endpoint.
+
+AddAuthorizationFilters makes [Authorize] and [AllowAnonymous] work on tool, resource, and
+prompt classes and methods. A tool the caller isn't allowed to use drops out of tools/list.
+-->
+
+---
+layout: "panels"
+---
+
+# What the client sees
+
+<PanelRow :cols="2" size="12" arrow>
+
+<Panel caption="POST / with no token">
+
+```http
+HTTP/1.1 401 Unauthorized
+WWW-Authenticate: Bearer
+  resource_metadata="http://localhost:6233/
+  .well-known/oauth-protected-resource/"
+```
+
+</Panel>
+
+<Panel caption="GET the metadata" dark>
+
+```json
+{
+  "resource": "http://localhost:6233/",
+  "authorization_servers": [
+    "https://login.example.com/"
+  ],
+  "bearer_methods_supported": ["header"],
+  "scopes_supported": ["time.read"]
+}
+```
+
+</Panel>
+
+</PanelRow>
+
+<!--
+Real responses from that code running locally. The header is wrapped to fit; on the wire it's
+one line.
+
+That's everything a client needs to start the OAuth flow, and you didn't write any of it.
+-->
+
+---
+layout: "statement"
+---
+
+Your server checks tokens. It never issues them.
+
+<Caption>
+
+Use the identity provider you already have. And never forward the client's token to another API.
+
+</Caption>
+
+<!--
+Entra ID, Auth0, Keycloak, whatever you run today. If it speaks OAuth 2.1 and publishes
+authorization server metadata, it works.
+
+The MCP spec forbids token passthrough: if your tool calls a downstream API, get a token for
+that API. Don't reuse the one the client sent you.
+-->
