@@ -121,8 +121,14 @@ What changes:
 Then:
 
 - Show both transports with no client in between. It's the same JSON-RPC in a different envelope:
-  - stdio: `scripts/raw-stdio.ps1` pipes `initialize` and a `tools/call` into `demo04` and prints stdout, one JSON message per line. Add `-Demo demo03` to show the stdout bug raw, or `-TimeZone Tokyo` to show the error message.
-  - HTTP: run `dotnet run --project src/demo05`. It listens on `http://localhost:6233/`, and `TimeServer.http` sends the same `tools/call` as one POST. No handshake is needed in stateless mode, and the reply comes back as an SSE `event: message`.
+  - stdio: `scripts/raw-stdio.ps1` pipes `initialize` and a `tools/call` into `demo04` and prints stdout, one JSON message per line. Add `-Method tools -Pretty` to show the tool list the model reads, `-Demo demo03` to show the stdout bug raw, or `-TimeZone Tokyo` to show the error message.
+  - HTTP: run `dotnet run --project src/demo05`. It listens on `http://localhost:6233/`. `TimeServer.http` has one request per method: `tools/list`, `tools/call` (good and bad arguments), `convert_time`, `resources/list` and `resources/read`, and `prompts/list` and `prompts/get`. It runs in VS Code (REST Client), Visual Studio, or Rider. Each request stands alone because stateless mode needs no handshake, and each reply comes back as one SSE frame (`event: message`, then `data:`). The same request from curl or Postman:
+
+    ```
+    curl http://localhost:6233/ -H "Accept: application/json, text/event-stream" -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    ```
+
+    A browser address bar won't work, because MCP needs a JSON POST.
 - In Claude Code: `claude mcp add -s project --transport http time-http http://localhost:6233/`, then restart with the step 1 command.
 - Ask the same question from Codex and Copilot, which you set up before the talk.
 - Stateless mode keeps no per-session state, so any instance can answer any request when you scale it out.

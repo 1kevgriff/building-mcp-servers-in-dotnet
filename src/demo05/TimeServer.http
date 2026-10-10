@@ -1,7 +1,20 @@
 # For more info on HTTP files go to https://aka.ms/vs/httpfile
+#
+# Every request is a plain JSON-RPC POST. Stateless mode needs no initialize
+# handshake, so each request stands alone. Responses arrive as one SSE frame:
+# `event: message`, then the JSON-RPC response on the `data:` line.
 
 @HostAddress = http://localhost:6233
 
+### The tools: exactly what the model reads
+POST {{HostAddress}}/
+Accept: application/json, text/event-stream
+Content-Type: application/json
+MCP-Protocol-Version: 2025-11-25
+
+{ "jsonrpc": "2.0", "id": 1, "method": "tools/list" }
+
+### Call a tool
 POST {{HostAddress}}/
 Accept: application/json, text/event-stream
 Content-Type: application/json
@@ -9,12 +22,92 @@ MCP-Protocol-Version: 2025-11-25
 
 {
     "jsonrpc": "2.0",
-    "id": 1,
+    "id": 2,
     "method": "tools/call",
     "params": {
         "name": "get_current_time",
         "arguments": {
             "timeZone": "Asia/Tokyo"
+        }
+    }
+}
+
+### Call a tool with a bad argument: the error message the model gets
+POST {{HostAddress}}/
+Accept: application/json, text/event-stream
+Content-Type: application/json
+MCP-Protocol-Version: 2025-11-25
+
+{
+    "jsonrpc": "2.0",
+    "id": 3,
+    "method": "tools/call",
+    "params": {
+        "name": "get_current_time",
+        "arguments": {
+            "timeZone": "Tokyo"
+        }
+    }
+}
+
+### Convert a time
+POST {{HostAddress}}/
+Accept: application/json, text/event-stream
+Content-Type: application/json
+MCP-Protocol-Version: 2025-11-25
+
+{
+    "jsonrpc": "2.0",
+    "id": 4,
+    "method": "tools/call",
+    "params": {
+        "name": "convert_time",
+        "arguments": {
+            "dateTime": "2026-10-15T10:20:00",
+            "fromTimeZone": "America/New_York",
+            "toTimeZone": "Asia/Tokyo"
+        }
+    }
+}
+
+### The resources
+POST {{HostAddress}}/
+Accept: application/json, text/event-stream
+Content-Type: application/json
+MCP-Protocol-Version: 2025-11-25
+
+{ "jsonrpc": "2.0", "id": 5, "method": "resources/list" }
+
+### Read a resource
+POST {{HostAddress}}/
+Accept: application/json, text/event-stream
+Content-Type: application/json
+MCP-Protocol-Version: 2025-11-25
+
+{ "jsonrpc": "2.0", "id": 6, "method": "resources/read", "params": { "uri": "time://zones" } }
+
+### The prompts
+POST {{HostAddress}}/
+Accept: application/json, text/event-stream
+Content-Type: application/json
+MCP-Protocol-Version: 2025-11-25
+
+{ "jsonrpc": "2.0", "id": 7, "method": "prompts/list" }
+
+### Get a prompt: the server fills in the template, nothing runs
+POST {{HostAddress}}/
+Accept: application/json, text/event-stream
+Content-Type: application/json
+MCP-Protocol-Version: 2025-11-25
+
+{
+    "jsonrpc": "2.0",
+    "id": 8,
+    "method": "prompts/get",
+    "params": {
+        "name": "find_meeting_time",
+        "arguments": {
+            "timeZones": "America/New_York, Europe/London, Asia/Tokyo"
         }
     }
 }
