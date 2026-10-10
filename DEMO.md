@@ -120,7 +120,9 @@ What changes:
 
 Then:
 
-- Run it locally with `dotnet run --project src/demo05`. It listens on `http://localhost:6233/`, and `TimeServer.http` sends a raw `tools/call`.
+- Show both transports with no client in between. It's the same JSON-RPC in a different envelope:
+  - stdio: `scripts/raw-stdio.ps1` pipes `initialize` and a `tools/call` into `demo04` and prints stdout, one JSON message per line. Add `-Demo demo03` to show the stdout bug raw, or `-TimeZone Tokyo` to show the error message.
+  - HTTP: run `dotnet run --project src/demo05`. It listens on `http://localhost:6233/`, and `TimeServer.http` sends the same `tools/call` as one POST. No handshake is needed in stateless mode, and the reply comes back as an SSE `event: message`.
 - In Claude Code: `claude mcp add -s project --transport http time-http http://localhost:6233/`, then restart with the step 1 command.
 - Ask the same question from Codex and Copilot, which you set up before the talk.
 - Stateless mode keeps no per-session state, so any instance can answer any request when you scale it out.
